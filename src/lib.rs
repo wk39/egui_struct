@@ -1,4 +1,4 @@
-use egui::{Button, Grid, Id, Response, ScrollArea, Ui, Widget, WidgetText};
+use bevy_egui::egui::{self, Button, Grid, Id, Response, ScrollArea, Ui, Widget, WidgetText};
 pub use egui_struct_macros::*;
 use std::hash::Hash;
 use std::ops::{Deref, DerefMut};

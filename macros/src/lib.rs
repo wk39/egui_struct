@@ -431,14 +431,14 @@ fn handle_enum(
             fn has_primitive_imut(&self) -> ::std::primitive::bool {
                 true
             }
-            fn show_childs_imut(&self, ui: &mut ::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::egui::Response, _reset2: ::std::option::Option<&Self>, id: ::egui::Id) -> ::egui::Response {
+            fn show_childs_imut(&self, ui: &mut ::bevy_egui::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::bevy_egui::egui::Response, _reset2: ::std::option::Option<&Self>, id: ::bevy_egui::egui::Id) -> ::bevy_egui::egui::Response {
                 match self{
                     #(#show_childs_arm)*
                     _=>(),
                 }
                 response
             }
-            fn show_primitive_imut(&self, ui: &mut ::egui::Ui, _config: Self::ConfigTypeImut<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::egui::Response {
+            fn show_primitive_imut(&self, ui: &mut ::bevy_egui::egui::Ui, _config: Self::ConfigTypeImut<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::bevy_egui::egui::Response {
                 fn to_text(s:& #ty)-> ::std::string::String{
                     match s{
                         #(#to_name_arm)*
@@ -473,7 +473,7 @@ fn handle_enum(
             fn has_primitive(&self) -> ::std::primitive::bool {
                 true
             }
-            fn show_childs(&mut self, ui: &mut ::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::egui::Response, reset2: ::std::option::Option<&Self>, id: ::egui::Id) -> ::egui::Response {
+            fn show_childs(&mut self, ui: &mut ::bevy_egui::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::bevy_egui::egui::Response, reset2: ::std::option::Option<&Self>, id: ::bevy_egui::egui::Id) -> ::bevy_egui::egui::Response {
                 #![allow(unused)]
                 #reset_to_struct_default
                 #(#reset_to_struct_expr)*
@@ -483,7 +483,7 @@ fn handle_enum(
                 }
                 response
             }
-            fn show_primitive(&mut self, ui: &mut ::egui::Ui, _config: Self::ConfigType<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::egui::Response {
+            fn show_primitive(&mut self, ui: &mut ::bevy_egui::egui::Ui, _config: Self::ConfigType<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::bevy_egui::egui::Response {
                 #![allow(unused)]
                 fn to_text(s:& #ty)-> ::std::string::String{
                     match s{
@@ -492,9 +492,9 @@ fn handle_enum(
                 }
                 ui.horizontal(|ui|{
                     let defspacing=ui.spacing().item_spacing.clone();
-                    ui.spacing_mut().item_spacing=::egui::vec2(0.0, 0.0);
-                    let mut inner_response=ui.allocate_response(::egui::vec2(0.0,0.0), ::egui::Sense::hover());
-                    let mut response=::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox")).wrap(false)
+                    ui.spacing_mut().item_spacing=::bevy_egui::egui::vec2(0.0, 0.0);
+                    let mut inner_response=ui.allocate_response(::bevy_egui::egui::vec2(0.0,0.0), ::bevy_egui::egui::Sense::hover());
+                    let mut response=::bevy_egui::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox")).wrap(false)
                     .selected_text(to_text(self))
                     .show_ui(ui,|ui|{
                         ui.spacing_mut().item_spacing=defspacing;
@@ -857,11 +857,11 @@ fn handle_struct(
             fn has_childs_imut(&self) -> ::std::primitive::bool {
                !Self::SIMPLE_IMUT
             }
-            fn show_childs_imut(&self, ui: &mut ::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::egui::Response, _reset2: ::std::option::Option<&Self>, id: ::egui::Id) -> ::egui::Response {
+            fn show_childs_imut(&self, ui: &mut ::bevy_egui::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::bevy_egui::egui::Response, _reset2: ::std::option::Option<&Self>, id: ::bevy_egui::egui::Id) -> ::bevy_egui::egui::Response {
                 #(#fields_code)*
                 response
             }
-            fn show_primitive_imut(&self, ui: &mut ::egui::Ui, _config: Self::ConfigTypeImut<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::egui::Response {
+            fn show_primitive_imut(&self, ui: &mut ::bevy_egui::egui::Ui, _config: Self::ConfigTypeImut<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::bevy_egui::egui::Response {
                 #show_primitive_imut
             }
         }
@@ -873,13 +873,13 @@ fn handle_struct(
             fn has_childs(&self) -> ::std::primitive::bool {
                !Self::SIMPLE
             }
-            fn show_childs(&mut self, ui: &mut ::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::egui::Response, reset2: ::std::option::Option<&Self>, id: ::egui::Id) -> ::egui::Response {
+            fn show_childs(&mut self, ui: &mut ::bevy_egui::egui::Ui, indent_level: ::std::primitive::isize, mut response: ::bevy_egui::egui::Response, reset2: ::std::option::Option<&Self>, id: ::bevy_egui::egui::Id) -> ::bevy_egui::egui::Response {
                 #reset_to_struct_default
                 #reset_to_struct_expr
                 #(#fields_code_mut)*
                 response
             }
-            fn show_primitive(&mut self, ui: &mut ::egui::Ui, _config: Self::ConfigType<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::egui::Response {
+            fn show_primitive(&mut self, ui: &mut ::bevy_egui::egui::Ui, _config: Self::ConfigType<'_>, id: impl ::std::hash::Hash + ::std::clone::Clone) -> ::bevy_egui::egui::Response {
                 #show_primitive
             }
         }

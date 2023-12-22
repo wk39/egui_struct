@@ -13,13 +13,15 @@ keywords = ["egui"]
 
 [dependencies]
 egui_struct_macros = { path = "./macros/", version = "0.3" }
-egui = { version = "0.23", default-features = false }
+bevy_egui = "0.24.0"                                         # 0.22 for bevy 0.11
+# egui = { version = "0.23", default-features = false }
 
 indexmap = { version = "2.0", optional = true }
 
 [features]
 indexmap = ["dep:indexmap"]
-default = ["i18n"]
+# default = ["i18n"]
+default = []
 i18n = ["egui_struct_macros/i18n"]
 
 [workspace]
