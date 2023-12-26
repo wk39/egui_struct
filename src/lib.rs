@@ -28,7 +28,8 @@ macro_rules! generate_show {
             let id =
                 ui.make_persistent_id((label.text().to_string(), std::any::TypeId::of::<Self>()));
             ScrollArea::vertical()
-                .auto_shrink([false; 2])
+                // .auto_shrink([false; 2])
+                .auto_shrink([false, true])
                 .show(ui, |ui| {
                     Grid::new(id)
                         .striped(true)
