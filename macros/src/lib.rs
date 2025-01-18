@@ -474,12 +474,12 @@ fn handle_enum(
         }
     };
 
-    #[cfg(feature = "egui28")]
+    #[cfg(any(feature = "egui28", feature = "egui30"))]
     let egui_struct_mut_combobox = quote! {
         ::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox"))
             .wrap_mode(::egui::TextWrapMode::Extend)
     };
-    #[cfg(not(feature = "egui28"))]
+    #[cfg(not(any(feature = "egui28", feature = "egui30")))]
     let egui_struct_mut_combobox = quote! {
         ::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox")).wrap(false)
     };

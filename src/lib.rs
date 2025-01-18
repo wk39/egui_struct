@@ -23,6 +23,8 @@ use egui26 as egui;
 use egui27 as egui;
 #[cfg(feature = "egui28")]
 use egui28 as egui;
+#[cfg(feature = "egui30")]
+use egui30 as egui;
 
 macro_rules! generate_show {
     ($top_name:ident, $collapsing_name:ident, $show_collapsing_inner:ident, $primitive_name:ident, $childs_name:ident, $start_collapsed:ident,
@@ -311,9 +313,9 @@ macro_rules! impl_num_primitives {
                 fn show_primitive(&mut self, ui: &mut Ui, config: Self::ConfigType<'_>, id: impl Hash  + Clone) -> Response {
                     match config{
                         Self::ConfigType::NumDefault        =>  egui::DragValue::new(self).ui(ui),
-                        #[cfg(feature = "egui28")]
+                        #[cfg(any(feature = "egui28", feature = "egui30"))]
                         Self::ConfigType::DragValue(min,max)=>  egui::DragValue::new(self).range(min..=max).ui(ui),
-                        #[cfg(not(feature = "egui28"))]
+                        #[cfg(not(any(feature = "egui28", feature = "egui30")))]
                         Self::ConfigType::DragValue(min,max)=>  egui::DragValue::new(self).clamp_range(min..=max).ui(ui),
                         Self::ConfigType::Slider(min,max)   =>  egui::Slider::new(self, min..=max).ui(ui),
                         Self::ConfigType::SliderStep(min,max,step)   =>  egui::Slider::new(self, min..=max).step_by(step as f64).ui(ui),
