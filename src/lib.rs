@@ -2,29 +2,39 @@
 //!
 //! See [demo](https://github.com/PingPongun/egui_struct/tree/master/demo)
 
-use egui::{Button, Grid, Id, Response, ScrollArea, Ui, Widget, WidgetText};
-pub use egui_struct_macros::*;
 use std::hash::Hash;
 use std::ops::{Deref, DerefMut};
 
-#[cfg(feature = "egui21")]
-use egui21 as egui;
-#[cfg(feature = "egui22")]
-use egui22 as egui;
-#[cfg(feature = "egui23")]
-use egui23 as egui;
-#[cfg(feature = "egui24")]
-use egui24 as egui;
-#[cfg(feature = "egui25")]
-use egui25 as egui;
-#[cfg(feature = "egui26")]
-use egui26 as egui;
-#[cfg(feature = "egui27")]
-use egui27 as egui;
-#[cfg(feature = "egui28")]
-use egui28 as egui;
-#[cfg(feature = "egui30")]
-use egui30 as egui;
+use cfg_if::cfg_if;
+
+cfg_if! {
+    if #[cfg(feature = "egui21")] {
+        use egui21 as egui;
+    } else if #[cfg(feature = "egui22")] {
+        use egui22 as egui;
+    } else if #[cfg(feature = "egui23")] {
+        use egui23 as egui;
+    } else if #[cfg(feature = "egui24")] {
+        use egui24 as egui;
+    } else if #[cfg(feature = "egui25")] {
+        use egui25 as egui;
+    } else if #[cfg(feature = "egui26")] {
+        use egui26 as egui;
+    } else if #[cfg(feature = "egui27")] {
+        use egui27 as egui;
+    } else if #[cfg(feature = "egui28")] {
+        use egui28 as egui;
+    } else if #[cfg(feature = "egui30")] {
+        use egui30 as egui;
+    } else if #[cfg(feature = "egui31")] {
+        use egui31 as egui;
+    } else {
+        use egui31 as egui;
+    }
+}
+
+use egui::{Button, Grid, Id, Response, ScrollArea, Ui, Widget, WidgetText};
+pub use egui_struct_macros::*;
 
 macro_rules! generate_show {
     ($top_name:ident, $collapsing_name:ident, $show_collapsing_inner:ident, $primitive_name:ident, $childs_name:ident, $start_collapsed:ident,
@@ -313,10 +323,15 @@ macro_rules! impl_num_primitives {
                 fn show_primitive(&mut self, ui: &mut Ui, config: Self::ConfigType<'_>, id: impl Hash  + Clone) -> Response {
                     match config{
                         Self::ConfigType::NumDefault        =>  egui::DragValue::new(self).ui(ui),
-                        #[cfg(any(feature = "egui28", feature = "egui30"))]
-                        Self::ConfigType::DragValue(min,max)=>  egui::DragValue::new(self).range(min..=max).ui(ui),
-                        #[cfg(not(any(feature = "egui28", feature = "egui30")))]
-                        Self::ConfigType::DragValue(min,max)=>  egui::DragValue::new(self).clamp_range(min..=max).ui(ui),
+                        Self::ConfigType::DragValue(min,max)=>  {
+                            cfg_if!{
+                                if #[cfg(any(feature = "egui28", feature = "egui30", feature = "egui31"))] {
+                                egui::DragValue::new(self).range(min..=max).ui(ui)
+                                } else {
+                                egui::DragValue::new(self).clamp_range(min..=max).ui(ui)
+                                }
+                            }
+                        },
                         Self::ConfigType::Slider(min,max)   =>  egui::Slider::new(self, min..=max).ui(ui),
                         Self::ConfigType::SliderStep(min,max,step)   =>  egui::Slider::new(self, min..=max).step_by(step as f64).ui(ui),
                         Self::ConfigType::ComboBox(iter) => show_combobox(self, ui, Some(iter), id),

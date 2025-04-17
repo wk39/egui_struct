@@ -523,6 +523,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ecolor"
+version = "0.31.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc4feb366740ded31a004a0e4452fbf84e80ef432ecf8314c485210229672fd1"
+dependencies = [
+ "emath 0.31.1",
+]
+
+[[package]]
 name = "eframe"
 version = "0.28.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -660,6 +669,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "egui"
+version = "0.31.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25dd34cec49ab55d85ebf70139cb1ccd29c977ef6b6ba4fe85489d6877ee9ef3"
+dependencies = [
+ "ahash",
+ "bitflags 2.6.0",
+ "emath 0.31.1",
+ "epaint 0.31.1",
+ "nohash-hasher",
+ "profiling",
+]
+
+[[package]]
 name = "egui-winit"
 version = "0.28.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -696,6 +719,7 @@ dependencies = [
 name = "egui_struct"
 version = "0.4.2"
 dependencies = [
+ "cfg-if",
  "egui 0.21.0",
  "egui 0.22.0",
  "egui 0.23.0",
@@ -705,6 +729,7 @@ dependencies = [
  "egui 0.27.2",
  "egui 0.28.1",
  "egui 0.30.0",
+ "egui 0.31.1",
  "egui_struct_macros",
  "indexmap",
 ]
@@ -787,6 +812,12 @@ name = "emath"
 version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4fe73c1207b864ee40aa0b0c038d6092af1030744678c60188a05c28553515d"
+
+[[package]]
+name = "emath"
+version = "0.31.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e4cadcff7a5353ba72b7fea76bf2122b5ebdbc68e8155aa56dfdea90083fe1b"
 
 [[package]]
 name = "epaint"
@@ -914,6 +945,21 @@ dependencies = [
  "ahash",
  "ecolor 0.30.0",
  "emath 0.30.0",
+ "nohash-hasher",
+ "parking_lot",
+ "profiling",
+]
+
+[[package]]
+name = "epaint"
+version = "0.31.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41fcc0f5a7c613afd2dee5e4b30c3e6acafb8ad6f0edb06068811f708a67c562"
+dependencies = [
+ "ab_glyph",
+ "ahash",
+ "ecolor 0.31.1",
+ "emath 0.31.1",
  "nohash-hasher",
  "parking_lot",
  "profiling",
