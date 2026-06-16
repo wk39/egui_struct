@@ -32,8 +32,10 @@ cfg_if! {
         use egui32 as egui;
     } else if #[cfg(feature = "egui33")] {
         use egui33 as egui;
+    } else if #[cfg(feature = "egui34")] {
+        use egui34 as egui;
     } else {
-        use egui33 as egui;
+        use egui34 as egui;
     }
 }
 
@@ -329,7 +331,7 @@ macro_rules! impl_num_primitives {
                         Self::ConfigType::NumDefault        =>  egui::DragValue::new(self).ui(ui),
                         Self::ConfigType::DragValue(min,max)=>  {
                             cfg_if!{
-                                if #[cfg(any(feature = "egui28", feature = "egui30", feature = "egui31", feature="egui32", feature="egui33"))] {
+                                if #[cfg(any(feature = "egui28", feature = "egui30", feature = "egui31", feature="egui32", feature="egui33", feature="egui34"))] {
                                 egui::DragValue::new(self).range(min..=max).ui(ui)
                                 } else {
                                 egui::DragValue::new(self).clamp_range(min..=max).ui(ui)

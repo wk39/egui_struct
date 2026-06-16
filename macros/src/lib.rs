@@ -479,7 +479,8 @@ fn handle_enum(
         feature = "egui30",
         feature = "egui31",
         feature = "egui32",
-        feature = "egui33"
+        feature = "egui33",
+        feature = "egui34"
     ))]
     let egui_struct_mut_combobox = quote! {
         ::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox"))
@@ -490,7 +491,8 @@ fn handle_enum(
         feature = "egui30",
         feature = "egui31",
         feature = "egui32",
-        feature = "egui33"
+        feature = "egui33",
+        feature = "egui34"
     )))]
     let egui_struct_mut_combobox = quote! {
         ::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox")).wrap(false)
