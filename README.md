@@ -13,7 +13,7 @@ Crate idea is similar to crates [egui-probe](https://github.com/zakarumych/egui-
 
 |                            | EguiStruct                                                                   | egui-probe                                                        | enum2egui        | egui_inspect                 | egui-controls                     |
 | :------------------------- | :--------------------------------------------------------------------------- | ----------------------------------------------------------------- | :--------------- | :--------------------------- | :-------------------------------- |
-| egui version               | 0.34 (0.21-0.34) ****                                                        | 0.27/0.28                                                         | 0.23/0.24.1/0.26 | 0.20                         | N/A                               |
+| egui version               | 0.35 (0.21-0.35) ****                                                        | 0.27/0.28                                                         | 0.23/0.24.1/0.26 | 0.20                         | N/A                               |
 | Layout*                    | Grid                                                                         | Grid                                                              | Group/nested     | Nested                       | Grid                              |
 | i18n support               | ✅ (rust-i18n**)                                                              | ❌                                                                 | ❌                | ❌                            | ❌                                 |
 | Field description          | ✅ on hover hint (from attribute)                                             | ❌                                                                 | ❌                | ❌                            | ✅ third column (from doc comment) |
@@ -87,7 +87,7 @@ See ./demo
 
 ### egui version
 
-`egui_struct 0.4` by default depends on `egui 0.34`. To use other versions of egui use correct feature in `Cargo.toml`, eg. to make it work with egui 0.28:
+`egui_struct 0.4` by default depends on `egui 0.35`. To use other versions of egui use correct feature in `Cargo.toml`, eg. to make it work with egui 0.28:
 
 ```toml
 egui_struct = { version = "0.4", default-features = false, features = [ "egui28" ] }
