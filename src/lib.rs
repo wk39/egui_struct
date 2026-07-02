@@ -34,8 +34,10 @@ cfg_if! {
         use egui33 as egui;
     } else if #[cfg(feature = "egui34")] {
         use egui34 as egui;
+    } else if #[cfg(feature = "egui35")] {
+        use egui35 as egui;
     } else {
-        use egui34 as egui;
+        use egui35 as egui;
     }
 }
 
@@ -331,7 +333,7 @@ macro_rules! impl_num_primitives {
                         Self::ConfigType::NumDefault        =>  egui::DragValue::new(self).ui(ui),
                         Self::ConfigType::DragValue(min,max)=>  {
                             cfg_if!{
-                                if #[cfg(any(feature = "egui28", feature = "egui30", feature = "egui31", feature="egui32", feature="egui33", feature="egui34"))] {
+                                if #[cfg(any(feature = "egui28", feature = "egui30", feature = "egui31", feature="egui32", feature="egui33", feature="egui34", feature="egui35"))] {
                                 egui::DragValue::new(self).range(min..=max).ui(ui)
                                 } else {
                                 egui::DragValue::new(self).clamp_range(min..=max).ui(ui)
@@ -802,8 +804,19 @@ fn show_combobox<'a, T: Clone + ToString + PartialEq>(
 ) -> Response {
     let defspacing = ui.spacing().item_spacing.clone();
     ui.spacing_mut().item_spacing = egui::vec2(0.0, 0.0);
-    let egui::InnerResponse { inner, response } =
-        egui::ComboBox::from_id_source((id, "__EguiStruct_combobox"))
+    // egui35: from_id_source 제거됨 → from_id_salt 사용
+    // egui35 의 AsIdSalt 는 Hash+Debug 를 요구하나 id: impl Hash+Clone 은 Debug 미보유 →
+    // u64 로 해시해 salt 로 사용 (u64 는 Hash+Debug)
+    #[cfg(feature = "egui35")]
+    let combobox = {
+        use std::hash::{Hash, Hasher};
+        let mut h = std::collections::hash_map::DefaultHasher::new();
+        (id, "__EguiStruct_combobox").hash(&mut h);
+        egui::ComboBox::from_id_salt(h.finish())
+    };
+    #[cfg(not(feature = "egui35"))]
+    let combobox = egui::ComboBox::from_id_source((id, "__EguiStruct_combobox"));
+    let egui::InnerResponse { inner, response } = combobox
             .selected_text(sel.to_string())
             .show_ui(ui, |ui| {
                 let mut inner_response =
