@@ -488,7 +488,7 @@ fn handle_enum(
     };
     // egui35: from_id_source 제거됨 → from_id_salt 사용
     // egui35: from_id_salt 의 AsIdSalt 는 Hash+Debug 를 요구하나 id 는 Debug 미보유 → u64 해시 salt 사용
-    #[cfg(feature = "egui35")]
+    #[cfg(any(feature = "egui35", feature = "egui36"))]
     let egui_struct_mut_combobox = quote! {
         ::egui::ComboBox::from_id_salt({
             use ::std::hash::{Hash, Hasher};
@@ -505,7 +505,8 @@ fn handle_enum(
         feature = "egui32",
         feature = "egui33",
         feature = "egui34",
-        feature = "egui35"
+        feature = "egui35",
+        feature = "egui36"
     )))]
     let egui_struct_mut_combobox = quote! {
         ::egui::ComboBox::from_id_source((id.clone(), "__EguiStruct_enum_combobox")).wrap(false)

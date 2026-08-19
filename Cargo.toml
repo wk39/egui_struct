@@ -32,11 +32,13 @@ egui32 = { version = "0.32", package = "egui", default-features = false, optiona
 egui33 = { version = "0.33", package = "egui", default-features = false, optional = true }
 egui34 = { version = "0.34", package = "egui", default-features = false, optional = true }
 egui35 = { version = "0.35", package = "egui", default-features = false, optional = true }
+egui36 = { version = "0.36", package = "egui", default-features = false, optional = true }
 
 indexmap = { version = "2.0", optional = true }
 cfg-if = "1.0.0"
 
 [features]
+egui36 = ["dep:egui36", "egui_struct_macros/egui36"]
 egui35 = ["dep:egui35", "egui_struct_macros/egui35"]
 egui34 = ["dep:egui34", "egui_struct_macros/egui34"]
 egui33 = ["dep:egui33", "egui_struct_macros/egui33"]
