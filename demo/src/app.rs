@@ -35,7 +35,7 @@ pub enum Color {
         name: String,
     },
 
-    #[eguis(resetable(with_expr = ||Color::Custom(255,13,17) ))]
+    #[eguis(resetable(with_expr = ||Color::Custom(255,13,17) ), default = "Color::Custom(255,13,17)")]
     Custom(
         #[eguis(
         resetable = "not_resetable",

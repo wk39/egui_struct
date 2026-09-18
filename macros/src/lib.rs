@@ -105,6 +105,10 @@ struct EVariant {
     i18n: Option<String>,
     ///add reset(to default) button to all inner fields (overrides resetable enum-level setting)
     resetable: Option<Resetable>,
+    /// Expression (function path or `(closure)()` call) evaluated to construct this variant when it is
+    /// selected in the combobox (or materialised by eclone). Defaults to the variant with every field
+    /// set to `FieldType::default()`; use it when a plain field default (e.g. `0.0`) is not meaningful.
+    default: Option<Expr>,
 }
 
 #[derive(Debug, FromDeriveInput)]
@@ -231,6 +235,10 @@ fn handle_enum(
                 }
                 let vident_w_inner = quote! { Self :: #vident(#(#fields_names),*)};
                 let vident_w_inner2 = quote! { Self :: #vident(#( #fields_names2),*)};
+                let vdefault = match &variant.default {
+                    Some(expr) => quote! { #expr },
+                    None => quote! { Self:: #vident(#(#fields_default)*) },
+                };
                 let (
                     _reset_to_struct_default,
                     fields_code,
@@ -292,7 +300,7 @@ fn handle_enum(
                     let mut tresp=ui.selectable_label(matches!(self,  Self:: #vident(..)), #vlabel)#hint;
                     if tresp.clicked()
                     {
-                        *self = Self:: #vident(#(#fields_default)*);
+                        *self = #vdefault;
                         tresp.mark_changed()
                     }
                     inner_response |=tresp;
@@ -310,7 +318,7 @@ fn handle_enum(
                         if let #vident_w_inner2=self{
                             #( #fields_map_eclone )*
                         } else {
-                            *self = Self:: #vident(#(#fields_default)*);
+                            *self = #vdefault;
                             if let #vident_w_inner2=self{
                                 #( #fields_map_eclone )*
                             } else {::std::unreachable!()}
@@ -332,6 +340,10 @@ fn handle_enum(
                     fields_names2.push(quote! { #field_name: #fname2 });
                 }
                 let vident_w_inner = quote! { Self :: #vident{#(#fields_names),*}};
+                let vdefault = match &variant.default {
+                    Some(expr) => quote! { #expr },
+                    None => quote! { Self:: #vident{#(#fields_default)*} },
+                };
                 let (
                     _reset_to_struct_default,
                     fields_code,
@@ -368,7 +380,7 @@ fn handle_enum(
                     let mut tresp=ui.selectable_label(matches!(self,  Self:: #vident{..}), #vlabel)#hint;
                     if tresp.clicked()
                     {
-                        *self = Self:: #vident{#(#fields_default)*};
+                        *self = #vdefault;
                         tresp.mark_changed()
                     }
                     inner_response |=tresp;
@@ -386,7 +398,7 @@ fn handle_enum(
                         if let Self::#vident{#(#fields_names2),*}=self{
                             #( #fields_map_eclone )*
                         } else {
-                            *self = Self:: #vident{#(#fields_default)*};
+                            *self = #vdefault;
                             if let Self::#vident{#(#fields_names2),*}=self{
                                 #( #fields_map_eclone )*
                             } else {::std::unreachable!()}
