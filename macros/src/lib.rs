@@ -229,7 +229,7 @@ fn handle_enum(
                 let mut fields_names2 = Vec::new();
                 for (idx, field) in variant.fields.fields.iter().enumerate() {
                     let field_type = &field.ty;
-                    fields_default.push(quote! { #field_type::default(), });
+                    fields_default.push(quote! { <#field_type>::default(), });
                     fields_names.push(format_ident!("_field_{}", idx));
                     fields_names2.push(format_ident!("_2_field_{}", idx));
                 }
@@ -334,7 +334,7 @@ fn handle_enum(
                 for field in &variant.fields.fields {
                     let field_name = field.ident.as_ref().unwrap();
                     let field_type = &field.ty;
-                    fields_default.push(quote! { #field_name: #field_type::default(), });
+                    fields_default.push(quote! { #field_name: <#field_type>::default(), });
                     fields_names.push(field_name);
                     let fname2 = format_ident!("_2_{}", field_name);
                     fields_names2.push(quote! { #field_name: #fname2 });
