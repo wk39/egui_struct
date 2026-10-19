@@ -298,7 +298,10 @@ fn handle_enum(
                 show_childs_mut_arm.push(quote! { #vident_w_inner=>{#(#fields_code_mut)*},});
                 show_combobox.push(quote! {
                     let mut tresp=ui.selectable_label(matches!(self,  Self:: #vident(..)), #vlabel)#hint;
-                    if tresp.clicked()
+                    // Re-clicking the variant that is already selected must NOT overwrite it:
+                    // doing so wipes the fields the user just edited back to the default value.
+                    // Only assign (and report a change) when the variant actually changes.
+                    if tresp.clicked() && !matches!(self, Self:: #vident(..))
                     {
                         *self = #vdefault;
                         tresp.mark_changed()
@@ -378,7 +381,10 @@ fn handle_enum(
                 show_childs_mut_arm.push(quote! { #vident_w_inner => {#(#fields_code_mut)*},});
                 show_combobox.push(quote! {
                     let mut tresp=ui.selectable_label(matches!(self,  Self:: #vident{..}), #vlabel)#hint;
-                    if tresp.clicked()
+                    // Re-clicking the variant that is already selected must NOT overwrite it:
+                    // doing so wipes the fields the user just edited back to the default value.
+                    // Only assign (and report a change) when the variant actually changes.
+                    if tresp.clicked() && !matches!(self, Self:: #vident{..})
                     {
                         *self = #vdefault;
                         tresp.mark_changed()
@@ -411,7 +417,8 @@ fn handle_enum(
                 to_hint_arm.push(quote! { Self :: #vident => #hint_top,});
                 show_combobox.push(quote! {
                     let mut tresp=ui.selectable_label(matches!(self,  Self:: #vident), #vlabel)#hint;
-                    if tresp.clicked()
+                    // A no-op click must not be reported as a change (see the guard above).
+                    if tresp.clicked() && !matches!(self, Self:: #vident)
                     {
                         *self = Self:: #vident;
                         tresp.mark_changed()
