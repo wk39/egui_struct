@@ -1159,26 +1159,66 @@ fn get_config(config: Option<String>) -> TokenStream {
         .parse()
         .unwrap()
 }
+// convert_case 0.10 dropped `Case::Toggle`/`Case::Alternating` (and their patterns); these reproduce the
+// 0.6 behaviour exactly so `rename_all = "Toggle" | "Alternating"` keeps producing the same labels.
+fn toggle_words(words: &[&str]) -> Vec<String> {
+    words
+        .iter()
+        .map(|word| {
+            let mut chars = word.chars();
+            match chars.next() {
+                Some(c) => c.to_lowercase().chain(chars.as_str().to_uppercase().chars()).collect(),
+                None => String::new(),
+            }
+        })
+        .collect()
+}
+
+// The upper/lower state carries across words, as in convert_case 0.6.
+fn alternating_words(words: &[&str]) -> Vec<String> {
+    let mut upper = false;
+    words
+        .iter()
+        .map(|word| {
+            word.chars()
+                .map(|letter| {
+                    if letter.is_uppercase() || letter.is_lowercase() {
+                        let out = if upper {
+                            letter.to_uppercase().to_string()
+                        } else {
+                            letter.to_lowercase().to_string()
+                        };
+                        upper = !upper;
+                        out
+                    } else {
+                        letter.to_string()
+                    }
+                })
+                .collect()
+        })
+        .collect()
+}
+
 fn parse_case_name(case_name: &str) -> Converter {
     let conv = Converter::new();
     match case_name {
         "Upper" => conv.to_case(Case::Upper),
         "Lower" => conv.to_case(Case::Lower),
         "Title" => conv.to_case(Case::Title),
-        "Toggle" => conv.to_case(Case::Toggle),
+        "Toggle" => conv.set_pattern(Pattern::Custom(toggle_words)).set_delim(" "),
         "Camel" => conv.to_case(Case::Camel),
         "Pascal" => conv.to_case(Case::Pascal),
         "UpperCamel" => conv.to_case(Case::UpperCamel),
         "Snake" => conv.to_case(Case::Snake),
         "UpperSnake" => conv.to_case(Case::UpperSnake),
-        "ScreamingSnake" => conv.to_case(Case::ScreamingSnake),
+        "ScreamingSnake" => conv.to_case(Case::Constant),
         "Kebab" => conv.to_case(Case::Kebab),
         "Cobol" => conv.to_case(Case::Cobol),
         "UpperKebab" => conv.to_case(Case::UpperKebab),
         "Train" => conv.to_case(Case::Train),
         "Flat" => conv.to_case(Case::Flat),
         "UpperFlat" => conv.to_case(Case::UpperFlat),
-        "Alternating" => conv.to_case(Case::Alternating),
+        "Alternating" => conv.set_pattern(Pattern::Custom(alternating_words)).set_delim(" "),
         "Sentence" => conv.set_pattern(Pattern::Sentence).set_delim(" "),
         _ => panic!("Unrecognized case name: {}", case_name),
     }
